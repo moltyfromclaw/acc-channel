@@ -291,14 +291,17 @@ export const accChannelPlugin: ChannelPlugin = {
       return next;
     },
     
-    isConfigured: (account) => Boolean(account.serverUrl?.trim()),
+    isConfigured: (account) => Boolean((account as ResolvedAccAccount).serverUrl?.trim()),
     
-    describeAccount: (account) => ({
-      accountId: account.accountId,
-      name: account.agentName,
-      enabled: account.enabled,
-      configured: Boolean(account.serverUrl?.trim()),
-    }),
+    describeAccount: (account) => {
+      const a = account as ResolvedAccAccount;
+      return {
+        accountId: a.accountId,
+        name: a.agentName,
+        enabled: a.enabled,
+        configured: Boolean(a.serverUrl?.trim()),
+      };
+    },
   },
 
   outbound: {

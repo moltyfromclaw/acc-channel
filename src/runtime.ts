@@ -26,9 +26,10 @@ export interface AccRuntimeSessions {
 }
 
 export interface AccRuntimeContext {
-  sessions: AccRuntimeSessions;
+  sessions?: AccRuntimeSessions;
   gatewayUrl?: string;
   gatewayToken?: string;
+  [key: string]: unknown;
 }
 
 let accRuntime: AccRuntimeContext | null = null;
@@ -41,9 +42,16 @@ export function setAccRuntime(runtime: AccRuntimeContext) {
 }
 
 /**
- * Check if runtime is available
+ * Check if runtime is available with sessions support
  */
 export function hasAccRuntime(): boolean {
+  return accRuntime !== null;
+}
+
+/**
+ * Check if native sessions.spawn is available
+ */
+export function hasNativeSessions(): boolean {
   return accRuntime !== null && typeof accRuntime.sessions?.spawn === "function";
 }
 

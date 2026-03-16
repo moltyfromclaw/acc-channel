@@ -6,6 +6,31 @@
  */
 
 declare module "openclaw/plugin-sdk" {
+  export function emptyPluginConfigSchema(): Record<string, never>;
+
+  export interface OpenClawPluginApi {
+    runtime: {
+      sessions?: {
+        spawn: (opts: {
+          task: string;
+          label?: string;
+          cleanup?: "delete" | "keep";
+          runTimeoutSeconds?: number;
+          model?: string;
+        }) => Promise<{ content?: string; sessionKey?: string; runId?: string }>;
+      };
+      [key: string]: unknown;
+    };
+    registerChannel: (params: { plugin: ChannelPlugin }) => void;
+    logger: {
+      info: (msg: string, ...args: unknown[]) => void;
+      warn: (msg: string, ...args: unknown[]) => void;
+      error: (msg: string, ...args: unknown[]) => void;
+      debug: (msg: string, ...args: unknown[]) => void;
+    };
+    [key: string]: unknown;
+  }
+
   export interface OpenClawConfig {
     channels?: Record<string, unknown>;
     agents?: {
